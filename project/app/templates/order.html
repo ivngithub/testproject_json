@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %} Index {% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <nav class="nav nav-inline">
+            <a class="nav-link active" href="{{ url_for('index') }}">Главная</a>
+            <a class="nav-link" href="{{ url_for('json_list') }}">Список</a>
+            <a class="nav-link" href="{{ url_for('order') }}">Заказы</a>
+        </nav>
+    </div>
+
+    <div class="container-fluid" style="margin: 30px 0">
+        <h4>Заказы</h4>
+        <hr>
+        <table class="table table-bordered table-hover" style="margin: 50px 0">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">sensor_type</th>
+                    <th scope="col">num</th>
+                    <th scope="col">name</th>
+                    <th scope="col">temperature</th>
+                    <th scope="col">humidity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <th scope="row">{{ order.id }}</th>
+                        <td>{{ order.sensor_type }}</td>
+                        <td>{{ order.num }}</td>
+                        <td>{{ order.name }}</td>
+                        <td>{{ order.temperature }}</td>
+                        <td>{{ order.humidity }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

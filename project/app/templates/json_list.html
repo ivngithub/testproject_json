@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %} Json list {% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <nav class="nav nav-inline">
+            <a class="nav-link active" href="{{ url_for('index') }}">Главная</a>
+            <a class="nav-link" href="{{ url_for('json_list') }}">Список</a>
+            <a class="nav-link" href="{{ url_for('order') }}">Заказы</a>
+        </nav>
+    </div>
+
+    <div class="container-fluid" style="margin: 30px 0">
+        <h4>Список</h4>
+        <hr>
+        <table class="table table-bordered table-hover" style="margin: 50px 0">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">sensor_type</th>
+                    <th scope="col">num</th>
+                    <th scope="col">name</th>
+                    <th scope="col">temperature</th>
+                    <th scope="col">humidity</th>
+                    <th scope="col">select</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for json in jsons %}
+                    <tr>
+                        <th scope="row">{{ json.id }}</th>
+                        <td>{{ json.sensor_type }}</td>
+                        <td>{{ json.num }}</td>
+                        <td>{{ json.name }}</td>
+                        <td>{{ json.temperature }}</td>
+                        <td>{{ json.humidity }}</td>
+                        <td><button type="button" onclick="return set_cookie({{ json.id }}, 2021, 12, 31)" class="btn btn-primary">add</button></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block script%}
+    {{ super() }}
+
+    <script type="text/javascript">
+
+        function get_cookie(cookie_name)
+        {
+            var results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)' );
+
+            if (results)
+                return (unescape(results[2]));
+            else
+                return null;
+        }
+
+        function set_cookie(id, exp_y, exp_m, exp_d)
+            {
+                var orders = get_cookie("orders");
+                if (orders) {
+                    var cookie_string = "orders" + "=" + (orders) + (id) + ",";
+                }
+                else {
+                    var cookie_string = "orders" + "=" + (id) + ",";
+                }
+
+                cookie_string += "; path=/";
+
+                if (exp_y)
+                {
+                    var expires = new Date ( exp_y, exp_m, exp_d );
+                    cookie_string += "; expires=" + expires.toGMTString();
+                }
+
+                document.cookie = cookie_string;
+            }
+
+    </script>
+
+{% endblock %}
